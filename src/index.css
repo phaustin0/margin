@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root[data-theme="dark"] {
+  --c-bg: #1c1e1b;
+  --c-surface: #242621;
+  --c-text: #e8e6de;
+  --c-sub: #a3a39b;
+  --c-accent: #7a9a7e;
+  --c-warn: #b5675a;
+  --c-on-accent: #161813;
+}
+
+:root[data-theme="light"] {
+  --c-bg: #f3f1ea;
+  --c-surface: #eae7dd;
+  --c-text: #2a2b27;
+  --c-sub: #6b6b63;
+  --c-accent: #5c7d62;
+  --c-warn: #a3564a;
+  --c-on-accent: #ffffff;
+}
+
+html,
+body {
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+  background: var(--c-bg);
+}
+
+#root {
+  height: 100%;
+}
+
+input,
+button,
+select {
+  font-family: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--c-text);
+  -webkit-font-smoothing: antialiased;
+}
