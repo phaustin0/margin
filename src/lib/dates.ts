@@ -34,6 +34,12 @@ const MONTH_ABBR = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
+export const WEEKDAY_NAMES = [
+  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+];
+
+export const WEEKDAY_ABBR = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 export function fmtShort(d: Date): string {
   return MONTH_ABBR[d.getMonth()] + ' ' + d.getDate();
 }
@@ -52,7 +58,17 @@ export function getCycleForOffset(cycle: BudgetCycle, offset: number): CyclePeri
   const today = new Date();
   const anchor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-  if (cycle.type === 'monthly') {
+  if (cycle.type === 'weekly') {
+    const dow = cycle.startDayOfWeek;
+    const diffToStart = (anchor.getDay() - dow + 7) % 7;
+    const currentStart = new Date(anchor);
+    currentStart.setDate(anchor.getDate() - diffToStart);
+    const start = new Date(currentStart);
+    start.setDate(start.getDate() + offset * 7);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    return { start, end };
+  } else if (cycle.type === 'monthly') {
     const sd = cycle.startDay;
     let y = anchor.getFullYear();
     let m = anchor.getMonth();

@@ -6,7 +6,7 @@ import {
   ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
 import { useApp } from '../store/AppContext';
-import { ordinal } from '../lib/dates';
+import { ordinal, WEEKDAY_ABBR, WEEKDAY_NAMES } from '../lib/dates';
 import { CURRENCY_SYMBOLS, MISC_CATEGORY_ID } from '../constants';
 import { exportCSV, exportJSON, importJSON } from '../lib/exportImport';
 import { EditCategoryDialog } from './EditCategoryDialog';
@@ -36,14 +36,17 @@ export function Settings() {
   const cycle = settings.budgetCycle;
   const cycleStartDay = cycle.type === 'monthly' ? cycle.startDay : 1;
   const [day1, day2] = cycle.type === 'semi-monthly' ? cycle.days : [5, 20];
+  const cycleStartDayOfWeek = cycle.type === 'weekly' ? cycle.startDayOfWeek : 0;
 
   const setCycleMonthly = () => updateSettings({ budgetCycle: { type: 'monthly', startDay: cycleStartDay } });
   const setCycleSemi = () => updateSettings({ budgetCycle: { type: 'semi-monthly', days: [day1, day2] } });
+  const setCycleWeekly = () => updateSettings({ budgetCycle: { type: 'weekly', startDayOfWeek: cycleStartDayOfWeek } });
   const setStartDay = (v: number) => updateSettings({ budgetCycle: { type: 'monthly', startDay: v || 1 } });
   const setDay1 = (v: number) =>
     updateSettings({ budgetCycle: { type: 'semi-monthly', days: [v || 1, day2] } as BudgetCycle });
   const setDay2 = (v: number) =>
     updateSettings({ budgetCycle: { type: 'semi-monthly', days: [day1, v || 1] } as BudgetCycle });
+  const setStartDayOfWeek = (v: number) => updateSettings({ budgetCycle: { type: 'weekly', startDayOfWeek: v } });
 
   const onBudgetChange = (v: string) => {
     setBudgetInput(v);
@@ -154,6 +157,14 @@ export function Settings() {
             {ordinal(Math.min(day1, day2))} and {ordinal(Math.max(day1, day2))}
           </div>
         </button>
+        <button
+          onClick={setCycleWeekly}
+          className="text-left p-4 rounded-xl bg-[var(--c-surface)] cursor-pointer"
+          style={{ border: cycle.type === 'weekly' ? '1px solid var(--c-accent)' : '1px solid transparent' }}
+        >
+          <div className="text-[16px] font-medium">Weekly</div>
+          <div className="text-[13px] text-[var(--c-sub)] mt-0.5">Starts {WEEKDAY_NAMES[cycleStartDayOfWeek]}s</div>
+        </button>
       </div>
       {cycle.type === 'monthly' && (
         <div className="mt-3.5">
@@ -191,6 +202,28 @@ export function Settings() {
               onChange={(e) => setDay2(Number(e.target.value))}
               className="w-20 p-2.5 rounded-[10px] bg-[var(--c-surface)] border-none text-[16px] outline-none text-[var(--c-text)]"
             />
+          </div>
+        </div>
+      )}
+      {cycle.type === 'weekly' && (
+        <div className="mt-3.5">
+          <div className="text-[13px] text-[var(--c-sub)] mb-1.5">Starts on</div>
+          <div className="flex gap-1.5">
+            {WEEKDAY_ABBR.map((label, idx) => (
+              <button
+                key={idx}
+                onClick={() => setStartDayOfWeek(idx)}
+                className="flex-1 py-2.5 rounded-[10px] text-[13px] cursor-pointer"
+                style={{
+                  background: 'var(--c-surface)',
+                  color: cycleStartDayOfWeek === idx ? 'var(--c-accent)' : 'var(--c-text)',
+                  border: cycleStartDayOfWeek === idx ? '1px solid var(--c-accent)' : '1px solid transparent',
+                  fontWeight: cycleStartDayOfWeek === idx ? 500 : 400,
+                }}
+              >
+                {label}
+              </button>
+            ))}
           </div>
         </div>
       )}

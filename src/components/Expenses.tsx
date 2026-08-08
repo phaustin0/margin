@@ -61,6 +61,23 @@ export function Expenses() {
     <div className="px-6 pt-5 relative">
       <div className="text-[22px] font-medium my-1 mb-5">Expenses</div>
 
+      <button
+        onClick={() => setFilterSheetOpen(true)}
+        className="flex items-center gap-2 py-2.5 px-4 rounded-full border-none cursor-pointer mb-5"
+        style={{ background: 'var(--c-surface)', color: 'var(--c-text)' }}
+      >
+        <AdjustmentsHorizontalIcon className="w-[18px] h-[18px]" strokeWidth={1.8} />
+        <span className="text-[14px]">Filter</span>
+        {filterCount > 0 && (
+          <span
+            className="min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-semibold flex items-center justify-center"
+            style={{ background: 'var(--c-accent)', color: 'var(--c-on-accent)' }}
+          >
+            {filterCount}
+          </span>
+        )}
+      </button>
+
       {groupedExpenses.length === 0 && (
         <div className="text-[14px] text-[var(--c-sub)] py-4 px-1">No expenses match.</div>
       )}
@@ -102,26 +119,6 @@ export function Expenses() {
         </div>
       ))}
       <div className="h-3" />
-
-      <button
-        onClick={() => setFilterSheetOpen(true)}
-        className="fixed bottom-20 z-40 w-[52px] h-[52px] rounded-full border-none flex items-center justify-center cursor-pointer"
-        style={{
-          background: 'var(--c-accent)',
-          color: 'var(--c-on-accent)',
-          right: 'max(20px, calc((100vw - 480px) / 2 + 20px))',
-        }}
-      >
-        <AdjustmentsHorizontalIcon className="w-5 h-5" strokeWidth={1.8} />
-        {filterCount > 0 && (
-          <span
-            className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-semibold flex items-center justify-center"
-            style={{ background: 'var(--c-accent)', color: 'var(--c-on-accent)', border: '1px solid var(--c-bg)' }}
-          >
-            {filterCount}
-          </span>
-        )}
-      </button>
 
       {filterSheetOpen && (
         <FilterSheet

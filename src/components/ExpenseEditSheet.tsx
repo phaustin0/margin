@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useApp } from '../store/AppContext';
 import { fmtCurrency } from '../lib/format';
+import { CategorySelect } from './CategorySelect';
 
 interface Props {
   id: string;
@@ -60,7 +61,7 @@ export function ExpenseEditSheet({ id, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/45 flex items-end justify-center z-50">
-      <div className="w-full max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-8 box-border flex flex-col max-h-[88vh] overflow-y-auto">
+      <div className="w-full max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-8 box-border flex flex-col max-h-[88dvh] overflow-y-auto overflow-x-hidden">
         <div className="flex items-center justify-between mb-2">
           <div className="text-[18px] font-medium">Edit expense</div>
           <button onClick={onClose} className="flex items-center justify-center p-1.5 bg-transparent border-none text-[var(--c-sub)] cursor-pointer">
@@ -100,22 +101,7 @@ export function ExpenseEditSheet({ id, onClose }: Props) {
         {noteError && <div className="text-[12px] text-[var(--c-sub)] mt-2">{noteError}</div>}
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Category</div>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => {
-            const selected = cat.id === categoryId;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setCategoryId(cat.id)}
-                className="flex items-center gap-[7px] py-2.5 px-3.5 rounded-full bg-[var(--c-surface)] text-[14px] cursor-pointer"
-                style={{ border: selected ? '1px solid var(--c-accent)' : '1px solid transparent' }}
-              >
-                <span className="w-2 h-2 rounded-full inline-block" style={{ background: cat.color }} />
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
-        </div>
+        <CategorySelect categories={categories} value={categoryId} onChange={setCategoryId} />
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Date</div>
         <input

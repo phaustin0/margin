@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useApp } from '../store/AppContext';
 import { CURRENCY_SYMBOLS, MISC_CATEGORY_ID } from '../constants';
-import { ordinal } from '../lib/dates';
+import { ordinal, WEEKDAY_ABBR, WEEKDAY_NAMES } from '../lib/dates';
 import type { BudgetCycle, Category, Settings } from '../types';
 
 interface DraftCategory {
@@ -22,10 +22,11 @@ export function Onboarding() {
   const [step, setStep] = useState(0);
   const [currency, setCurrency] = useState<'SGD' | 'PHP'>('SGD');
   const [budgetInput, setBudgetInput] = useState('');
-  const [cycleType, setCycleType] = useState<'monthly' | 'semi-monthly'>('monthly');
+  const [cycleType, setCycleType] = useState<'monthly' | 'semi-monthly' | 'weekly'>('monthly');
   const [cycleStartDay, setCycleStartDay] = useState(1);
   const [cycleDay1, setCycleDay1] = useState(5);
   const [cycleDay2, setCycleDay2] = useState(20);
+  const [cycleStartDayOfWeek, setCycleStartDayOfWeek] = useState(0);
   const [categories, setCategories] = useState<DraftCategory[]>([]);
   const [newCatName, setNewCatName] = useState('');
 
@@ -50,7 +51,9 @@ export function Onboarding() {
     const budgetCycle: BudgetCycle =
       cycleType === 'monthly'
         ? { type: 'monthly', startDay: cycleStartDay }
-        : { type: 'semi-monthly', days: [cycleDay1, cycleDay2] };
+        : cycleType === 'semi-monthly'
+          ? { type: 'semi-monthly', days: [cycleDay1, cycleDay2] }
+          : { type: 'weekly', startDayOfWeek: cycleStartDayOfWeek };
     const settings: Settings = {
       currency,
       monthlyBudget: budget,
@@ -68,7 +71,10 @@ export function Onboarding() {
   const nextColor = CATEGORY_COLORS_CYCLE[categories.length % CATEGORY_COLORS_CYCLE.length];
 
   return (
-    <div className="max-w-[480px] mx-auto min-h-screen relative flex flex-col bg-[var(--c-bg)] text-[var(--c-text)]">
+    <div
+      className="max-w-[480px] mx-auto min-h-dvh relative flex flex-col bg-[var(--c-bg)] text-[var(--c-text)]"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
       <div className="px-6 pt-7">
         <div className="h-1 w-full bg-[var(--c-surface)] rounded overflow-hidden">
           <div
@@ -79,7 +85,7 @@ export function Onboarding() {
       </div>
 
       {step === 0 && (
-        <div className="flex flex-col min-h-[calc(100vh-40px)] px-6 py-8 box-border">
+        <div className="flex flex-col min-h-[calc(100dvh-40px)] px-6 py-8 box-border">
           <div className="text-[13px] text-[var(--c-sub)] tracking-wide mb-3">Step 1 of 3</div>
           <div className="text-[26px] font-medium mb-7 leading-tight">What's your monthly budget?</div>
           <div className="text-[13px] text-[var(--c-sub)] mb-1.5">Currency</div>
@@ -121,7 +127,7 @@ export function Onboarding() {
       )}
 
       {step === 1 && (
-        <div className="flex flex-col min-h-[calc(100vh-40px)] px-6 py-8 box-border">
+        <div className="flex flex-col min-h-[calc(100dvh-40px)] px-6 py-8 box-border">
           <div className="text-[13px] text-[var(--c-sub)] tracking-wide mb-3">Step 2 of 3</div>
           <div className="text-[26px] font-medium mb-7 leading-tight">How does your budget cycle work?</div>
           <div className="flex flex-col gap-2.5 mt-2">
@@ -141,6 +147,16 @@ export function Onboarding() {
               <div className="text-[16px] font-medium">Twice a month</div>
               <div className="text-[13px] text-[var(--c-sub)] mt-0.5">
                 {ordinal(Math.min(cycleDay1, cycleDay2))} and {ordinal(Math.max(cycleDay1, cycleDay2))}
+              </div>
+            </button>
+            <button
+              onClick={() => setCycleType('weekly')}
+              className="text-left p-4 rounded-xl bg-[var(--c-surface)] cursor-pointer"
+              style={{ border: cycleType === 'weekly' ? '1px solid var(--c-accent)' : '1px solid transparent' }}
+            >
+              <div className="text-[16px] font-medium">Every week</div>
+              <div className="text-[13px] text-[var(--c-sub)] mt-0.5">
+                Starts {WEEKDAY_NAMES[cycleStartDayOfWeek]}s
               </div>
             </button>
           </div>
@@ -184,6 +200,28 @@ export function Onboarding() {
               </div>
             </div>
           )}
+          {cycleType === 'weekly' && (
+            <div className="mt-5">
+              <div className="text-[13px] text-[var(--c-sub)] mb-1.5">Starts on</div>
+              <div className="flex gap-1.5">
+                {WEEKDAY_ABBR.map((label, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCycleStartDayOfWeek(idx)}
+                    className="flex-1 py-2.5 rounded-[10px] text-[13px] cursor-pointer"
+                    style={{
+                      background: 'var(--c-surface)',
+                      color: cycleStartDayOfWeek === idx ? 'var(--c-accent)' : 'var(--c-text)',
+                      border: cycleStartDayOfWeek === idx ? '1px solid var(--c-accent)' : '1px solid transparent',
+                      fontWeight: cycleStartDayOfWeek === idx ? 500 : 400,
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="flex-1" />
           <div className="flex gap-3">
@@ -205,7 +243,7 @@ export function Onboarding() {
       )}
 
       {step === 2 && (
-        <div className="flex flex-col min-h-[calc(100vh-40px)] px-6 py-8 box-border">
+        <div className="flex flex-col min-h-[calc(100dvh-40px)] px-6 py-8 box-border">
           <div className="text-[13px] text-[var(--c-sub)] tracking-wide mb-3">Step 3 of 3</div>
           <div className="text-[26px] font-medium mb-1 leading-tight">Add your first categories</div>
           <div className="text-[14px] text-[var(--c-sub)] mb-2">Create at least one to get started.</div>

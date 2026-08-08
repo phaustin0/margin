@@ -23,7 +23,8 @@ export function Home() {
   const remaining = budget - spent;
   const pctUsed = budget > 0 ? (spent / budget) * 100 : 0;
   const over = pctUsed > 100;
-  const ringColor = over ? 'var(--c-warn)' : 'var(--c-accent)';
+  const nearLimit = pctUsed >= 90;
+  const ringColor = nearLimit ? 'var(--c-warn)' : 'var(--c-accent)';
   const circumference = 2 * Math.PI * 58;
   const dash = (Math.max(0, Math.min(100, pctUsed)) / 100) * circumference;
 

@@ -18,7 +18,8 @@ export interface Category {
 
 export type BudgetCycle =
   | { type: 'monthly'; startDay: number }
-  | { type: 'semi-monthly'; days: [number, number] };
+  | { type: 'semi-monthly'; days: [number, number] }
+  | { type: 'weekly'; startDayOfWeek: number }; // 0 (Sunday) - 6 (Saturday)
 
 export interface Settings {
   currency: 'SGD' | 'PHP';

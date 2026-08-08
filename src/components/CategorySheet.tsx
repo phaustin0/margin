@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../store/AppContext';
 import { fmtCurrency } from '../lib/format';
 import { fmtISO } from '../lib/dates';
+import { CategorySelect } from './CategorySelect';
 import type { Expense } from '../types';
 
 interface Props {
@@ -37,28 +38,17 @@ export function CategorySheet({ amount, note, initialCategoryId, onDone }: Props
 
   return (
     <div className="fixed inset-0 bg-black/45 flex items-end justify-center z-50">
-      <div className="w-full max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-8 box-border flex flex-col max-h-[88vh] overflow-y-auto">
+      <div className="w-full max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-8 box-border flex flex-col max-h-[88dvh] overflow-y-auto overflow-x-hidden">
         <div className="w-9 h-1 rounded-full bg-[var(--c-surface)] mx-auto mb-5" />
-        <div className="text-[34px] font-medium text-[var(--c-text)]">{fmtCurrency(amount, settings.currency)}</div>
-        <div className="text-[15px] text-[var(--c-sub)] mt-0.5 mb-5">{note}</div>
+        <div className="text-[34px] font-medium text-[var(--c-text)] break-words">{fmtCurrency(amount, settings.currency)}</div>
+        <div className="text-[15px] text-[var(--c-sub)] mt-0.5 mb-5 break-words">{note}</div>
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Category</div>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => {
-            const selected = cat.id === categoryId;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setCategoryId(cat.id)}
-                className="flex items-center gap-[7px] py-2.5 px-3.5 rounded-full bg-[var(--c-surface)] text-[var(--c-text)] text-[14px] cursor-pointer"
-                style={{ border: selected ? '1px solid var(--c-accent)' : '1px solid transparent' }}
-              >
-                <span className="w-2 h-2 rounded-full inline-block" style={{ background: cat.color }} />
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
-        </div>
+        <CategorySelect
+          categories={categories}
+          value={categoryId ?? ''}
+          onChange={(id) => setCategoryId(id || null)}
+        />
         {missing && <div className="text-[12px] text-[var(--c-sub)] mt-2">Choose a category to continue</div>}
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Date</div>

@@ -3,7 +3,7 @@ import type { Category, Expense, Settings } from '../types';
 import { CATEGORY_COLORS, MISC_CATEGORY_ID } from '../constants';
 
 const DB_NAME = 'margin-db';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const SETTINGS_KEY = 'settings';
 
 interface MarginDB extends DBSchema {
@@ -34,7 +34,7 @@ let dbPromise: Promise<IDBPDatabase<MarginDB>> | null = null;
 export function getDB(): Promise<IDBPDatabase<MarginDB>> {
   if (!dbPromise) {
     dbPromise = openDB<MarginDB>(DB_NAME, DB_VERSION, {
-      upgrade(db) {
+      async upgrade(db, oldVersion, _newVersion, transaction) {
         if (!db.objectStoreNames.contains('expenses')) {
           const store = db.createObjectStore('expenses', { keyPath: 'id' });
           store.createIndex('by-date', 'date');
@@ -44,6 +44,19 @@ export function getDB(): Promise<IDBPDatabase<MarginDB>> {
         }
         if (!db.objectStoreNames.contains('settings')) {
           db.createObjectStore('settings');
+        }
+
+        // v1 -> v2: budgetCycle gained a 'weekly' variant alongside the
+        // existing 'monthly' and 'semi-monthly' ones. Previously saved
+        // settings already satisfy the new union as-is, so no data needs
+        // transforming — this step just guards against a malformed/missing
+        // budgetCycle on an existing record so it doesn't crash the app.
+        if (oldVersion > 0 && oldVersion < 2) {
+          const store = transaction.objectStore('settings');
+          const existing = await store.get(SETTINGS_KEY);
+          if (existing && !existing.budgetCycle) {
+            await store.put({ ...existing, budgetCycle: DEFAULT_SETTINGS.budgetCycle }, SETTINGS_KEY);
+          }
         }
       },
     });

@@ -11,11 +11,11 @@
 }
 
 :root[data-theme="light"] {
-  --c-bg: #f3f1ea;
-  --c-surface: #eae7dd;
-  --c-text: #2a2b27;
-  --c-sub: #6b6b63;
-  --c-accent: #5c7d62;
+  --c-bg: #fdf1f5;
+  --c-surface: #f8e4eb;
+  --c-text: #3a2a2e;
+  --c-sub: #8c7378;
+  --c-accent: #c1607a;
   --c-warn: #a3564a;
   --c-on-accent: #ffffff;
 }

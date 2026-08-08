@@ -18,7 +18,10 @@ function Shell() {
   if (!onboarded) return <Onboarding />;
 
   return (
-    <div className="max-w-[480px] mx-auto min-h-screen bg-[var(--c-bg)] text-[var(--c-text)] flex flex-col relative">
+    <div
+      className="max-w-[480px] mx-auto h-dvh bg-[var(--c-bg)] text-[var(--c-text)] flex flex-col relative overflow-hidden"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
       <div className="flex-1 overflow-y-auto pb-4">
         {tab === 'home' && <Home />}
         {tab === 'expenses' && <Expenses />}
