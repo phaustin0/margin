@@ -62,21 +62,27 @@ export function FilterSheet({
           </button>
         </div>
         {period === 'custom' && (
-          <div className="flex items-center gap-2.5 mt-3">
-            <input
-              type="date"
-              placeholder="Start date"
-              value={dateStart}
-              onChange={(e) => onChangeDateStart(e.target.value)}
-              className="flex-1 min-w-0 p-2.5 px-3 rounded-[10px] bg-[var(--c-surface)] border-none text-[14px] outline-none text-[var(--c-text)]"
-            />
-            <input
-              type="date"
-              placeholder="End date"
-              value={dateEnd}
-              onChange={(e) => onChangeDateEnd(e.target.value)}
-              className="flex-1 min-w-0 p-2.5 px-3 rounded-[10px] bg-[var(--c-surface)] border-none text-[14px] outline-none text-[var(--c-text)]"
-            />
+          <div className="flex items-start gap-2.5 mt-3">
+            <div className="flex-1 min-w-0">
+              <div className="text-[12px] text-[var(--c-sub)] mb-1">Start date</div>
+              <input
+                type="date"
+                placeholder="Start date"
+                value={dateStart}
+                onChange={(e) => onChangeDateStart(e.target.value)}
+                className="w-full min-w-0 p-2.5 px-3 rounded-[10px] bg-[var(--c-surface)] border-none text-[14px] outline-none text-[var(--c-text)] box-border"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[12px] text-[var(--c-sub)] mb-1">End date</div>
+              <input
+                type="date"
+                placeholder="End date"
+                value={dateEnd}
+                onChange={(e) => onChangeDateEnd(e.target.value)}
+                className="w-full min-w-0 p-2.5 px-3 rounded-[10px] bg-[var(--c-surface)] border-none text-[14px] outline-none text-[var(--c-text)] box-border"
+              />
+            </div>
           </div>
         )}
 

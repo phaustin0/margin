@@ -15,6 +15,7 @@ export default defineConfig({
         'icons/icon-512.png',
         'icons/apple-touch-icon.png',
         'icons/margin-icon-dark.svg',
+        'icons/margin-icon-light.svg',
       ],
       manifest: {
         name: 'Margin',

@@ -34,8 +34,8 @@ export function Home() {
   const recentExpenses = sortedAll.slice(0, 3);
 
   return (
-    <div className="px-6 pt-5">
-      <div className="flex items-center justify-center gap-3 my-1 mb-5">
+    <div className="h-full min-h-0 flex flex-col px-6 pt-5">
+      <div className="shrink-0 flex items-center justify-center gap-3 my-1 mb-5">
         <button
           onClick={() => setCycleOffset((o) => o - 1)}
           className="flex items-center justify-center p-1.5 bg-transparent border-none text-[var(--c-sub)] cursor-pointer"
@@ -55,7 +55,7 @@ export function Home() {
         </button>
       </div>
 
-      <div className="flex items-center justify-center py-5 px-1 mb-7">
+      <div className="shrink-0 flex items-center justify-center py-5 px-1 mb-7">
         <div className="flex items-center gap-6">
           <div className="relative w-[132px] h-[132px] shrink-0">
             <svg width={132} height={132} viewBox="0 0 132 132" style={{ transform: 'rotate(-90deg)' }}>
@@ -95,6 +95,7 @@ export function Home() {
         </div>
       </div>
 
+      <div className="flex-1 min-h-0 overflow-y-auto">
       <div className="text-[13px] text-[var(--c-sub)] tracking-wide uppercase my-5 mb-2">Recent</div>
       {recentExpenses.length === 0 && (
         <div className="text-[14px] text-[var(--c-sub)] py-4 px-1">No expenses yet. Add your first below.</div>
@@ -132,6 +133,7 @@ export function Home() {
         })}
       </div>
       <div className="h-3" />
+      </div>
       {editingId && <ExpenseEditSheet id={editingId} onClose={() => setEditingId(null)} />}
     </div>
   );

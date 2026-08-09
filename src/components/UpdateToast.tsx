@@ -9,7 +9,10 @@ export function UpdateToast() {
   if (!needRefresh) return null;
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-[var(--c-surface)] text-[var(--c-text)] rounded-xl py-3 px-4 flex items-center gap-4 z-[90] w-max max-w-[calc(100%-32px)]">
+    <div
+      className="fixed left-1/2 -translate-x-1/2 bg-[var(--c-surface)] text-[var(--c-text)] rounded-xl py-3 px-4 flex items-center gap-4 z-[90] w-max max-w-[calc(100%-32px)]"
+      style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))' }}
+    >
       <span className="text-[14px] whitespace-nowrap">Update available</span>
       <button
         onClick={() => updateServiceWorker(true)}

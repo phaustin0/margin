@@ -58,12 +58,12 @@ export function Expenses() {
   };
 
   return (
-    <div className="px-6 pt-5 relative">
-      <div className="text-[22px] font-medium my-1 mb-5">Expenses</div>
+    <div className="h-full min-h-0 flex flex-col px-6 pt-5 relative">
+      <div className="shrink-0 text-[22px] font-medium my-1 mb-5">Expenses</div>
 
       <button
         onClick={() => setFilterSheetOpen(true)}
-        className="flex items-center gap-2 py-2.5 px-4 rounded-full border-none cursor-pointer mb-5"
+        className="shrink-0 flex items-center gap-2 py-2.5 px-4 rounded-full border-none cursor-pointer mb-5 self-start"
         style={{ background: 'var(--c-surface)', color: 'var(--c-text)' }}
       >
         <AdjustmentsHorizontalIcon className="w-[18px] h-[18px]" strokeWidth={1.8} />
@@ -78,6 +78,7 @@ export function Expenses() {
         )}
       </button>
 
+      <div className="flex-1 min-h-0 overflow-y-auto">
       {groupedExpenses.length === 0 && (
         <div className="text-[14px] text-[var(--c-sub)] py-4 px-1">No expenses match.</div>
       )}
@@ -119,6 +120,7 @@ export function Expenses() {
         </div>
       ))}
       <div className="h-3" />
+      </div>
 
       {filterSheetOpen && (
         <FilterSheet

@@ -22,7 +22,7 @@ function Shell() {
       className="max-w-[480px] mx-auto h-dvh bg-[var(--c-bg)] text-[var(--c-text)] flex flex-col relative overflow-hidden"
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
-      <div className="flex-1 min-h-0 overflow-y-auto pb-4">
+      <div className="flex-1 min-h-0 flex flex-col">
         {tab === 'home' && <Home />}
         {tab === 'expenses' && <Expenses />}
         {tab === 'charts' && <Charts />}

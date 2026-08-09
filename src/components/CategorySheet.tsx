@@ -57,6 +57,7 @@ export function CategorySheet({ amount, note, initialCategoryId, onDone }: Props
           value={date}
           onChange={(e) => setDate(e.target.value)}
           className="w-full p-3 px-3.5 rounded-[10px] bg-[var(--c-surface)] border-none text-[15px] outline-none box-border text-[var(--c-text)]"
+          style={{ width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}
         />
 
         <div className="flex items-center justify-between mt-1.5">

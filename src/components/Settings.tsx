@@ -85,7 +85,7 @@ export function Settings() {
   };
 
   return (
-    <div className="px-6 pt-5 pb-6">
+    <div className="h-full min-h-0 overflow-y-auto px-6 pt-5 pb-6">
       <div className="text-[22px] font-medium my-1 mb-5">Settings</div>
 
       <div className="text-[13px] text-[var(--c-sub)] tracking-wide uppercase my-5 mb-2">Appearance</div>
