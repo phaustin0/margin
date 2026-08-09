@@ -44,7 +44,7 @@ export function FilterSheet({
   return (
     <div className="fixed inset-0 bg-black/45 flex items-end justify-center z-50" onClick={onClose}>
       <div
-        className="w-full max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-7 box-border flex flex-col max-h-[85dvh] overflow-y-auto overflow-x-hidden"
+        className="w-full min-w-0 max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-7 box-border flex flex-col max-h-[85dvh] overflow-y-auto overflow-x-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-9 h-1 rounded-full bg-[var(--c-surface)] mx-auto mb-5" />

@@ -35,6 +35,7 @@ export function Home() {
 
   return (
     <div className="h-full min-h-0 flex flex-col px-6 pt-5">
+      <div className="shrink-0 text-[22px] font-medium my-1 mb-5">Dashboard</div>
       <div className="shrink-0 flex items-center justify-center gap-3 my-1 mb-5">
         <button
           onClick={() => setCycleOffset((o) => o - 1)}

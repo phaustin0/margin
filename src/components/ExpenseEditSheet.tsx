@@ -61,7 +61,7 @@ export function ExpenseEditSheet({ id, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/45 flex items-end justify-center z-50">
-      <div className="w-full max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-8 box-border flex flex-col max-h-[88dvh] overflow-y-auto overflow-x-hidden">
+      <div className="w-full min-w-0 max-w-[480px] bg-[var(--c-bg)] rounded-t-[20px] px-6 pt-3 pb-8 box-border flex flex-col max-h-[88dvh] overflow-y-auto overflow-x-hidden">
         <div className="flex items-center justify-between mb-2">
           <div className="text-[18px] font-medium">Edit expense</div>
           <button onClick={onClose} className="flex items-center justify-center p-1.5 bg-transparent border-none text-[var(--c-sub)] cursor-pointer">
@@ -104,13 +104,15 @@ export function ExpenseEditSheet({ id, onClose }: Props) {
         <CategorySelect categories={categories} value={categoryId} onChange={setCategoryId} />
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Date</div>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full p-3 px-3.5 rounded-[10px] bg-[var(--c-surface)] border-none text-[15px] outline-none box-border"
-          style={{ width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}
-        />
+        <div className="w-full min-w-0 overflow-hidden box-border">
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full p-3 px-3.5 rounded-[10px] bg-[var(--c-surface)] border-none text-[15px] outline-none box-border"
+            style={{ width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}
+          />
+        </div>
 
         <div className="flex items-center justify-between mt-1.5">
           <div className="text-[13px] text-[var(--c-sub)] my-3.5">Reimbursable</div>

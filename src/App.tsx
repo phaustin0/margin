@@ -9,10 +9,12 @@ import { Settings } from './components/Settings';
 import { Charts } from './components/Charts';
 import { Expenses } from './components/Expenses';
 import { UpdateToast } from './components/UpdateToast';
+import { useViewportHeight } from './lib/useViewportHeight';
 
 function Shell() {
   const { loading, onboarded } = useApp();
   const [tab, setTab] = useState<Tab>('home');
+  const viewportHeight = useViewportHeight();
 
   if (loading) return null;
   if (!onboarded) return <Onboarding />;
@@ -20,7 +22,10 @@ function Shell() {
   return (
     <div
       className="max-w-[480px] mx-auto h-dvh bg-[var(--c-bg)] text-[var(--c-text)] flex flex-col relative overflow-hidden"
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      style={{
+        paddingTop: 'env(safe-area-inset-top)',
+        height: viewportHeight != null ? `${viewportHeight}px` : undefined,
+      }}
     >
       <div className="flex-1 min-h-0 flex flex-col">
         {tab === 'home' && <Home />}
