@@ -17,7 +17,7 @@ const TABS: { id: Tab; label: string; Icon: typeof HomeIcon }[] = [
 export function TabBar({ active, onChange }: Props) {
   return (
     <div
-      className="sticky bottom-0 flex bg-[var(--c-bg)] border-t border-[var(--c-surface)]"
+      className="flex bg-[var(--c-bg)] border-t border-[var(--c-surface)]"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }}
     >
       {TABS.map(({ id, label, Icon }) => {

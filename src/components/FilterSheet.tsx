@@ -1,4 +1,5 @@
 import { CategorySelect } from './CategorySelect';
+import { DateInput } from './DateInput';
 import type { Category } from '../types';
 
 interface Props {
@@ -65,23 +66,11 @@ export function FilterSheet({
           <div className="flex items-start gap-2.5 mt-3">
             <div className="flex-1 min-w-0">
               <div className="text-[12px] text-[var(--c-sub)] mb-1">Start date</div>
-              <input
-                type="date"
-                placeholder="Start date"
-                value={dateStart}
-                onChange={(e) => onChangeDateStart(e.target.value)}
-                className="w-full min-w-0 p-2.5 px-3 rounded-[10px] bg-[var(--c-surface)] border-none text-[14px] outline-none text-[var(--c-text)] box-border"
-              />
+              <DateInput value={dateStart} onChange={onChangeDateStart} placeholder="Start date" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[12px] text-[var(--c-sub)] mb-1">End date</div>
-              <input
-                type="date"
-                placeholder="End date"
-                value={dateEnd}
-                onChange={(e) => onChangeDateEnd(e.target.value)}
-                className="w-full min-w-0 p-2.5 px-3 rounded-[10px] bg-[var(--c-surface)] border-none text-[14px] outline-none text-[var(--c-text)] box-border"
-              />
+              <DateInput value={dateEnd} onChange={onChangeDateEnd} placeholder="End date" />
             </div>
           </div>
         )}

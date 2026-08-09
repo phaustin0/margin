@@ -28,7 +28,7 @@ export function QuickAddBar() {
 
   return (
     <>
-      <div className="sticky bottom-0 z-40 px-4 pt-2 pb-3.5 bg-[var(--c-bg)]">
+      <div className="px-4 pt-2 pb-3.5 bg-[var(--c-bg)]">
         {error && <div className="text-[12px] text-[var(--c-warn)] px-1 pb-1.5">{error}</div>}
         <div className="flex items-center gap-2 bg-[var(--c-surface)] rounded-[14px] py-1.5 pl-4 pr-1.5">
           <input

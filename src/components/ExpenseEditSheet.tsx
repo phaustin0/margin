@@ -3,6 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useApp } from '../store/AppContext';
 import { fmtCurrency } from '../lib/format';
 import { CategorySelect } from './CategorySelect';
+import { DateInput } from './DateInput';
 
 interface Props {
   id: string;
@@ -104,15 +105,7 @@ export function ExpenseEditSheet({ id, onClose }: Props) {
         <CategorySelect categories={categories} value={categoryId} onChange={setCategoryId} />
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Date</div>
-        <div className="w-full min-w-0 overflow-hidden box-border">
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-3 px-3.5 rounded-[10px] bg-[var(--c-surface)] border-none text-[15px] outline-none box-border"
-            style={{ width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}
-          />
-        </div>
+        <DateInput value={date} onChange={setDate} />
 
         <div className="flex items-center justify-between mt-1.5">
           <div className="text-[13px] text-[var(--c-sub)] my-3.5">Reimbursable</div>

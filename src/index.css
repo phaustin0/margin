@@ -47,3 +47,23 @@ body {
   color: var(--c-text);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Hide the native calendar affordance so our own icon (DateInput.tsx) is the
+   only one shown, while keeping the whole field tappable to open the native
+   date picker: the real indicator stays present but invisible and stretched
+   to cover the input. */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+  display: none;
+}

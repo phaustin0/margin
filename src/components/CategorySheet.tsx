@@ -3,6 +3,7 @@ import { useApp } from '../store/AppContext';
 import { fmtCurrency } from '../lib/format';
 import { fmtISO } from '../lib/dates';
 import { CategorySelect } from './CategorySelect';
+import { DateInput } from './DateInput';
 import type { Expense } from '../types';
 
 interface Props {
@@ -52,15 +53,7 @@ export function CategorySheet({ amount, note, initialCategoryId, onDone }: Props
         {missing && <div className="text-[12px] text-[var(--c-sub)] mt-2">Choose a category to continue</div>}
 
         <div className="text-[13px] text-[var(--c-sub)] my-3.5">Date</div>
-        <div className="w-full min-w-0 overflow-hidden box-border">
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-3 px-3.5 rounded-[10px] bg-[var(--c-surface)] border-none text-[15px] outline-none box-border text-[var(--c-text)]"
-            style={{ width: '100%', maxWidth: '100%', minWidth: 0, boxSizing: 'border-box' }}
-          />
-        </div>
+        <DateInput value={date} onChange={setDate} />
 
         <div className="flex items-center justify-between mt-1.5">
           <div className="text-[13px] text-[var(--c-sub)] my-3.5">Reimbursable</div>
