@@ -15,6 +15,97 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Self-healing boot check: guards against an orphaned/stale service
+      // worker (a known iOS bug after a home-screen PWA is deleted and
+      // reinstalled) serving a broken or outdated cached app shell. Runs as
+      // a plain inline script, not the bundled module, so it still executes
+      // even if the cached JS bundle itself is the stale/broken part.
+      (function () {
+        var RECOVERY_KEY = 'margin:sw-recovery-attempted';
+
+        function alreadyAttemptedThisSession() {
+          try {
+            return sessionStorage.getItem(RECOVERY_KEY) === '1';
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function markAttempted() {
+          try {
+            sessionStorage.setItem(RECOVERY_KEY, '1');
+          } catch (e) {}
+        }
+
+        function nukeServiceWorkersAndReload() {
+          if (alreadyAttemptedThisSession()) return;
+          markAttempted();
+          var tasks = [];
+          if ('serviceWorker' in navigator) {
+            tasks.push(
+              navigator.serviceWorker.getRegistrations().then(function (regs) {
+                return Promise.all(
+                  regs.map(function (r) {
+                    return r.unregister();
+                  })
+                );
+              })
+            );
+          }
+          if ('caches' in window) {
+            tasks.push(
+              caches.keys().then(function (keys) {
+                return Promise.all(
+                  keys.map(function (k) {
+                    return caches.delete(k);
+                  })
+                );
+              })
+            );
+          }
+          Promise.all(tasks)
+            .catch(function () {})
+            .then(function () {
+              window.location.reload();
+            });
+        }
+
+        // Check 1: does a service worker appear to be serving a stale
+        // index.html for a deploy older than the one this page references?
+        // A fresh, uncached fetch of index.html reveals the *current*
+        // deploy's script tag; if the tag actually running on this page
+        // isn't found in it, we're running under a stale cache.
+        if ('serviceWorker' in navigator) {
+          var currentScript = document.querySelector('script[type="module"]');
+          var currentSrc = currentScript && currentScript.getAttribute('src');
+          if (currentSrc) {
+            fetch('/index.html', { cache: 'no-store' })
+              .then(function (res) {
+                return res.ok ? res.text() : null;
+              })
+              .then(function (html) {
+                if (html && html.indexOf(currentSrc) === -1) {
+                  nukeServiceWorkersAndReload();
+                }
+              })
+              .catch(function () {
+                // offline / network error — nothing actionable, don't block boot
+              });
+          }
+        }
+
+        // Check 2: did the app actually render anything? Covers breakage the
+        // version check can't see (e.g. a corrupted cached bundle that
+        // throws before React ever mounts).
+        setTimeout(function () {
+          var root = document.getElementById('root');
+          if (root && root.childElementCount === 0) {
+            nukeServiceWorkersAndReload();
+          }
+        }, 4000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

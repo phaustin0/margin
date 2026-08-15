@@ -52,6 +52,13 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+        // Every deploy gets a fresh, content-hashed precache manifest; once a
+        // new SW does activate, immediately drop any caches left over from
+        // older manifests instead of leaving them around indefinitely, and
+        // take control of already-open pages right away rather than waiting
+        // for the next navigation.
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
       },
     }),
   ],
